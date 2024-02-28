@@ -11,7 +11,7 @@ output: html_document
 Se obtuvo una base de datos de solicitudes de crédito de una Cooperativa importante del país, la cual contiene información sobre variables relevantes, incluyendo el patrimonio neto y los activos de los solicitantes. Por cuestiones de confidencialidad de los clientes de dicha cooperativa, se omitió las variables con respecto a información personal de los solicitantes, tomando únicamente para nuestro interés en este trabajo sólo las variables que necesitamos.
 
 ## 2.2 Construcción del Indicador de solvencia
-
+Dentro de una cooperativa, es importante la representación de la capacidad financiera mediante un indicador, el patrimonio neto representa la cantidad de flujo con la que está a disposición la cooperativa para hacer frente a situaciones futuras. Por lo tanto, dividir el patrimonio neto por los activos totales proporciona una medida de la capacidad de una entidad para cubrir sus obligaciones con sus activos.
 
 
 ```{r setup, include=FALSE}
