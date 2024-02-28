@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2024.2.27)  27 FEB 2024 23:48
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2024.2.27)  28 FEB 2024 00:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -350,8 +350,7 @@ Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 285.
 )
 \Hy@SectionHShift=\skip54
-)
-No file CODIGO_PROYECTO_EM.aux.
+) (./CODIGO_PROYECTO_EM.aux)
 \openout1 = `CODIGO_PROYECTO_EM.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 114.
@@ -641,11 +640,9 @@ LaTeX Font Info:    Overwriting symbol font `largesymbols' in version `bold'
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 Package hyperref Info: Link coloring OFF on input line 114.
+(./CODIGO_PROYECTO_EM.out) (./CODIGO_PROYECTO_EM.out)
 \@outlinefile=\write4
 \openout4 = `CODIGO_PROYECTO_EM.out'.
-
-
-Package hyperref Warning: Rerun to get /PageLabels entry.
 
 LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
 (Font)              scaled to size 12.0pt on input line 116.
@@ -676,27 +673,27 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 LaTeX Font Info:    Trying to load font information for U+msb on input line 116.
 (c:/Users/USER/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+) (./CODIGO_PROYECTO_EM.toc
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 7.0pt on input line 3.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
+(Font)              scaled to size 5.0pt on input line 3.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 10.00092pt on input line 3.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 7.00064pt on input line 3.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
+(Font)              scaled to size 5.00046pt on input line 3.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 9.99893pt on input line 3.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 6.99925pt on input line 3.
+LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
+(Font)              scaled to size 4.99947pt on input line 3.
 )
-No file CODIGO_PROYECTO_EM.toc.
 \tf@toc=\write5
 \openout5 = `CODIGO_PROYECTO_EM.toc'.
 
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 7.0pt on input line 173.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(1)/m/n' will be
-(Font)              scaled to size 5.0pt on input line 173.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 10.00092pt on input line 173.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 7.00064pt on input line 173.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(2)/m/n' will be
-(Font)              scaled to size 5.00046pt on input line 173.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 9.99893pt on input line 173.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 6.99925pt on input line 173.
-LaTeX Font Info:    Font shape `TU/latinmodern-math.otf(3)/m/n' will be
-(Font)              scaled to size 4.99947pt on input line 173.
 [1
 
 ]
@@ -716,21 +713,61 @@ Underfull \hbox (badness 10000) in paragraph at lines 281--283
 [][]
  []
 
-[3] [4] [5] [6] [7] [8] [9] [10] [11] [12] [13] [14] [15] [16] [17] [18] [19] [20] [21] [22] [23] [24] [25] [26] [27] [28] [29]
+[3] [4] [5]
 File: CODIGO_PROYECTO_EM_files/figure-latex/unnamed-chunk-6-1.pdf Graphic file (type pdf)
 <use CODIGO_PROYECTO_EM_files/figure-latex/unnamed-chunk-6-1.pdf>
-! Extra alignment tab has been changed to \cr.
-<recently read> \endtemplate 
-                             
-l.1754 ...$Medida & Media & Varianza & Sd & LINF &
-                                                   LimSUP \\ \hline 
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[6]
+File: CODIGO_PROYECTO_EM_files/figure-latex/unnamed-chunk-9-1.pdf Graphic file (type pdf)
+<use CODIGO_PROYECTO_EM_files/figure-latex/unnamed-chunk-9-1.pdf>
+File: CODIGO_PROYECTO_EM_files/figure-latex/unnamed-chunk-9-2.pdf Graphic file (type pdf)
+<use CODIGO_PROYECTO_EM_files/figure-latex/unnamed-chunk-9-2.pdf>
+File: CODIGO_PROYECTO_EM_files/figure-latex/unnamed-chunk-9-3.pdf Graphic file (type pdf)
+<use CODIGO_PROYECTO_EM_files/figure-latex/unnamed-chunk-9-3.pdf>
+
+Underfull \hbox (badness 10000) in paragraph at lines 538--541
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 538--541
+[]
+ []
+
+[7] [8]
+File: CODIGO_PROYECTO_EM_files/figure-latex/unnamed-chunk-10-1.pdf Graphic file (type pdf)
+<use CODIGO_PROYECTO_EM_files/figure-latex/unnamed-chunk-10-1.pdf>
+File: CODIGO_PROYECTO_EM_files/figure-latex/unnamed-chunk-10-2.pdf Graphic file (type pdf)
+<use CODIGO_PROYECTO_EM_files/figure-latex/unnamed-chunk-10-2.pdf>
+File: CODIGO_PROYECTO_EM_files/figure-latex/unnamed-chunk-10-3.pdf Graphic file (type pdf)
+<use CODIGO_PROYECTO_EM_files/figure-latex/unnamed-chunk-10-3.pdf>
+
+Underfull \hbox (badness 10000) in paragraph at lines 542--545
+[][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 542--545
+[]
+ []
+
+[9] [10] (./CODIGO_PROYECTO_EM.aux)
+ ***********
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-02-20>
+ ***********
+Package rerunfilecheck Info: File `CODIGO_PROYECTO_EM.out' has not changed.
+(rerunfilecheck)             Checksum: 2752CA787F70CAC7E541B955BB5E9399;1526.
+ ) 
 Here is how much of TeX's memory you used:
- 17022 strings out of 476792
- 314161 string characters out of 5801873
- 1947842 words of memory out of 5000000
- 38826 multiletter control sequences out of 15000+600000
+ 17102 strings out of 476792
+ 318246 string characters out of 5801873
+ 1938842 words of memory out of 5000000
+ 38890 multiletter control sequences out of 15000+600000
  564504 words of font info for 87 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 90i,9n,121p,419b,477s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,8n,121p,419b,364s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on CODIGO_PROYECTO_EM.pdf (29 pages).
+Output written on CODIGO_PROYECTO_EM.pdf (10 pages).

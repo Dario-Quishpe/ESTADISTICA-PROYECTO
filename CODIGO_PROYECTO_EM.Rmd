@@ -19,28 +19,29 @@ header-includes:
 
 Para una coperativa de ahorro y crédito es fundamental el análisis de La solvencia financiera de sus socios pues es un  factor crítico al evaluar las distintas solicitudes de créditos permitiendo tomar  decisiones sobre las mismas.Estás decisiones tienen impacto directo en los diferentes indicadores que son de gran relevancia en la institución para su monitoreo y supervisión. Dentro de estos se encuentran indicadores de mora por productos crediticios, porcentaje de colocación,riesgo crediticio ,etc.Está medida de solvencia nos proporciona una visión  de la capacidad  que tienen los socios para cumplir con sus obligaciones financieras, ya que en caso de un indicador de solvencia saludable  sugiere una menor probabilidad de incumplimiento en el pago de deudas,  así como también  permite a la cooperativa tomar decisiones de crédito informadas y personalizadas,dando oportunidad de  adaptar los términos del crédito u ofrecer productos convenientes según la solvencia individual.
 
-La coperativa de ahorro y credito denominada "X"  ,en vista de la importancia de la información otorgada por este indicador  a optado por hacer el acompañamiento de tecnicas estadísticas  a las decisiones de los analistas sobre los créditos. El presente proyecto intenta poner como un punto de partida el estudio de este indicador en un conjunto de socios.  
+La coperativa de ahorro y credito denominada "X"  ,en vista de la importancia de la información otorgada por este indicador  a optado por hacer el acompañamiento de tecnicas estadísticas  a las decisiones de los analistas sobre los créditos. El presente proyecto intenta poner como un punto de partida el estudio de este indicador en un conjunto de socios. 
+
 # Metodología
 
-## 2.1 Recolección de los datos
+##  Recolección de los datos
 
 Se obtuvo una base de datos de solicitudes de crédito de una Cooperativa importante del país, la cual contiene información sobre variables relevantes, incluyendo el patrimonio neto y los activos de los solicitantes. Por cuestiones de confidencialidad de los clientes de dicha cooperativa, se omitió las variables con respecto a información personal de los solicitantes, tomando únicamente para nuestro interés en este trabajo sólo las variables que necesitamos.
 
-## 2.2 Construcción del Indicador de solvencia
+##Construcción del Indicador de solvencia
 
 Dentro de una cooperativa, es importante la representación de la capacidad financiera mediante un indicador, el patrimonio neto representa la cantidad de flujo con la que está a disposición la cooperativa para hacer frente a situaciones futuras. Por lo tanto, dividir el patrimonio neto por los activos totales proporciona una medida de la capacidad de una entidad para cubrir sus obligaciones con sus activos.
 
 Por lo tanto, se construye el indicador de solvencia cómo:
 
-\begin{equation*}
-I=Patrimonio neto/Activos
-\end{equation*}
+\[I=Patrimonio neto/Activos\]
 
-## 2.3 Análisis Exploratorio
+
+## Análisis Exploratorio
 
 Se procederá a realizar diversos gráficos y pruebas estadísticas para identificar la distribución de cada variable, incluyendo el indicador de solvencia. El objetivo principal es obtener una distribución que se ajuste a una mixtura de distribuciones normales para nuestro indicador.
 
 ## Estimación de parámetros mediante el Algoritmo EM
+
 Mediante el algoritmo EM Expectation-Maximization, se procederá a estimar los parámetros del indicador de solvencia. Este algoritmo permitirá identificar los parámetros óptimos de la distribución (en un principio desconocida) del indicador de solvencia. Este algoritmo nos será de gran utilidad, pues una vez estimados los parámetros se los usará para hacer inferencia e identificar su distribución.
 
 
@@ -48,7 +49,9 @@ Mediante el algoritmo EM Expectation-Maximization, se procederá a estimar los p
 Una vez que se obtenga los parámetros como la media, la varianza y los pesosse aplicará un test estadístico apropiado para comprobar si la distribución del indicador es una Mixtura de distribuciones normales, dicho test fue realizado por Priscila Guayasamín para la clasificación de cooperativas por segmentos. En el caso en que el test rechace la hipótesis de mixturas de distribuciones normales, se procederá a la transformación de nuestros datos como una logarítmica, Box-Cox, etc.
 
 ## Simulación de datos mediante los parámetros obtenidos
+
 Si mediante el test desarrollado por Priscila se obtiene que hay evidencia estadística para aceptar que la distribución del indicador es una mixtura de normales, se procederá a realizar la simulación de nuevos datos para el indicador de solvencia, en esta simulación se incluirá los parámetros obtenidos por el algoritmo EM y con una distribución de mixtura de normales. Esto servirá para realizar intervalos de confianza del indicador así como constrastes de hipótesis.
+
 
 ```{r setup, include=FALSE}
 library(readxl)
@@ -66,7 +69,7 @@ library(car)
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r}
+```{r include=FALSE}
 
 #base<-read_xlsx("Solicitudes_Crédito.xlsx")
 #dim(base)
@@ -119,7 +122,7 @@ return(p.value)
 }
 ```
 
-```{r}
+```{r echo=FALSE}
 G1<-ggplot(data.frame(x = BASE1$TOTAL_PATRIMONIO_NETO), aes(x)) +
   geom_histogram(aes(y = ..density..), bins = 20, color = "white", fill = "lightblue", alpha = 0.7) +geom_density(color = "darkred", size = 1) + labs(title = "Total Patrimonio Neto")
 
@@ -145,8 +148,8 @@ grid.arrange(G5,G6,G7,G8)
 
 ```
 
-```{r}
-BASE1
+```{r echo=FALSE}
+#BASE1
 dim(BASE1)
 a<-(BASE1$Alog)
 b<-(BASE1$Blog)
@@ -200,48 +203,45 @@ MEDIA
 VAR
 SD
 ```
-```{r}
+
+```{r echo=FALSE}
 plot(density(indicador_sim),col="red")
 lines(density(BASE1$indlog),col="blue")
 legend("topright", legend = c("MUESTRA", "Montecarlo"), col = c("blue", "red"), lty = c(1, 1))
 ```
 
-
 \begin{table}[!h]
     \centering
     \caption{\textbf{Estimaciones por Montecarlo y Bootstrap (Datos Transformados)}}
-    \begin{tabular}{|l|l|l|l||l}
+    \begin{tabular}{|l|l|l|l|l|l|}
     \hline
-        Metodo$\backslash$ Medida &Media & Varianza & Sd & LINF & LimSUP \\ \hline
-        Montecarlo & -0.3285 & 0.1554 & 0.3942&  -0.33790 & -0.31939\\ \hline
-        Boots & 0.225 & 0.235 & 0.221& 5 & 4 \\ \hline
-      
+        Método/Medida & Media & Varianza & Sd & LINF & LimSUP \\ \hline
+        Montecarlo & -0.3285 & 0.1554 & 0.3942 & -0.33790 & -0.31939 \\ \hline
+        Bootstrap & 0.225 & 0.235 & 0.221 & 5 & 4 \\ \hline
     \end{tabular}
 \end{table}
 
 \begin{table}[!h]
     \centering
     \caption{\textbf{Estimaciones por Montecarlo y Bootstrap (Datos Originales)}}
-    \begin{tabular}{|l|l|l|l||l}
+    \begin{tabular}{|l|l|l|l|l|l|}
     \hline
-        Metodo$\backslash$ Medida & Media & Varianza & Sd & LINF & LimSUP \\ \hline
-        Montecarlo & 0.719& 1.1681 & 1.483255 &0.71326 & 0.72658 \\ \hline
-        Boots & 0.225 & 0.235 & 0.221 & 02 & 1 \\ \hline
-            \end{tabular}
+        Método & Media & Var & Sd & LINF & LSUP \\ \hline
+        Montecarlo & 0.719 & 1.1681 & 1.483255 & 0.71326 & 0.72658 \\ \hline
+        Bootstrap & 0.225 & 0.235 & 0.221 & 02 & 1 \\ \hline
+    \end{tabular}
 \end{table}
 
 \begin{table}[!h]
     \centering
     \caption{\textbf{Estimaciones por Montecarlo y Bootstrap (Datos Originales)}}
-    \begin{tabular}{|l|l|l}
+    \begin{tabular}{|l|l|l|l|}
     \hline
-        Metodo$\backslash$Medida & SESGO MEDIA & SESGO Varianza & SESGO Sd  \\ \hline
-        Montecarlo & -0.0464 & 1.1166 &0.1671\\ \hline
-        Boots & 0.225 & 0.235 & 4 \\ \hline
-            \end{tabular}
+        Método & SESGO MEDIA & SESGO Varianza & SESGO Sd  \\ \hline
+        Montecarlo & -0.0464 & 1.1166 & 0.1671 \\ \hline
+        Bootstrap & 0.225 & 0.235 & 4 \\ \hline
+    \end{tabular}
 \end{table}
-
-
 
 ```{r}
 #SESGO
@@ -277,7 +277,7 @@ cat("\nProporción de rechazos al 10%=",mean(pvalue<0.1),"\n")
 ```
 
 
-```{r}
+```{r echo=FALSE}
 
 
 #mvnorm.kur.test(A,n.simu = 1000)
@@ -296,7 +296,7 @@ O<-mvn(data, mvnTest = "mardia",multivariatePlot = "contour",tol =0.005 )
 
 
 
-```{r}
+```{r echo=FALSE}
 data<-dat
 #mvnorm.kur.test(dat,n.simu = 1000)
 #qqPlot(data, main = "Q-Q Plot Multivariado")
