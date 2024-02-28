@@ -5,6 +5,15 @@ date: "`r Sys.Date()`"
 output: html_document
 ---
 
+# <span style='color:darkblue;'>2. Metodología</span>
+
+## 2.1 Recolección de los datos
+Se obtuvo una base de datos de solicitudes de crédito de una Cooperativa importante del país, la cual contiene información sobre variables relevantes, incluyendo el patrimonio neto y los activos de los solicitantes. Por cuestiones de confidencialidad de los clientes de dicha cooperativa, se omitió las variables con respecto a información personal de los solicitantes, tomando únicamente para nuestro interés en este trabajo sólo las variables que necesitamos.
+
+## 2.2 Construcción del Indicador de solvencia
+
+
+
 ```{r setup, include=FALSE}
 library(readxl)
 library(tidyverse)
