@@ -4,6 +4,7 @@ author: "Armando Lara, Dario Quishpe , Jorge Arguello"
 date: "`r Sys.Date()`"
 output: html_document
 ---
+
 #Introducción
 
 Para una coperativa de ahorro y crédito es fundamental el análisis de La solvencia financiera de sus socios pues es un  factor crítico al evaluar las distintas solicitudes de créditos permitiendo tomar  decisiones sobre las mismas.Estás decisiones tienen impacto directo en los diferentes indicadores que son de gran relevancia en la institución para su monitoreo y supervisión. Dentro de estos se encuentran indicadores de mora por productos crediticios, porcentaje de colocación,riesgo crediticio ,etc.Está medida de solvencia nos proporciona una visión  de la capacidad  que tienen los socios para cumplir con sus obligaciones financieras, ya que en caso de un indicador de solvencia saludable  sugiere una menor probabilidad de incumplimiento en el pago de deudas,  así como también  permite a la cooperativa tomar decisiones de crédito informadas y personalizadas,dando oportunidad de  adaptar los términos del crédito u ofrecer productos convenientes según la solvencia individual.
@@ -26,7 +27,7 @@ knitr::opts_chunk$set(echo = TRUE)
 #base<-read_xlsx("Solicitudes_Crédito.xlsx")
 #dim(base)
 load("BASE_SOLICITUD_DE_CREDITO.RData")
-
+#BASE1
 ```
 
 ```{r}
@@ -81,13 +82,6 @@ dim(BASE1)
 hist(BASE1$Alog,breaks = 20)
 hist(BASE1$Blog,breaks = 20)
 hist(BASE1$indlog,breaks = 20)
-hist(BASE1$IndSolvencia)
-dim(BASE1)dTOTAL_PATRIMONIO_NETOim(BASE1)
-#BASE1<-BASE1[sample(nrow(BASE1), size = 0.15 * nrow(BASE1)), ]
-hist(BASE1$Alog,breaks = 20)
-hist(BASE1$Blog,breaks = 20)
-hist(BASE1$indlog,breaks = 20)
-dim(BASE1)
 a<-(BASE1$Alog)
 b<-(BASE1$Blog)
 dim(BASE1)
@@ -161,7 +155,6 @@ SesgoSd
 
 ```{r}
 #CONTRASTE DE HIPOTESIS datos transformados(log)
-
 #HO:mu=-0.34
 numsimu<-1000
 pvalue<-numeric(numsimu)
@@ -202,7 +195,7 @@ mvnorm.kur.test(A,n.simu = 1000)
 qqPlot(data, main = "Q-Q Plot Multivariado")
 # Realizar la prueba de normalidad multivariante
 #mvn(data, mvnTest = "hz",covariance = TRUE, showOutliers = TRUE,multivariatePlot = TRUE,tol=0.005)
-mvn(data, mvnTest = "mardia",covariance = FALSE, showOutliers = TRUE,multivariatePlot = "persp",tol =0.005,transform = "log" )
+mvn(data, mvnTest = "mardia",covariance = FALSE, showOutliers = TRUE,multivariatePlot = "persp",tol =0.005)
 mvn(data, mvnTest = "mardia",covariance = FALSE, showOutliers = TRUE,multivariatePlot = "qq",tol =0.005 )
 mvn(data, mvnTest = "mardia",covariance = FALSE, showOutliers = TRUE,multivariatePlot = "contour",tol =0.005 )
 #mvn(data, mvnTest = "royston", multivariateOutlierMethod = "quan", showOutliers = TRUE,multivariatePlot = TRUE)
