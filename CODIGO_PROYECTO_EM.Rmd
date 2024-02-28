@@ -38,6 +38,9 @@ Mediante el algoritmo EM Expectation-Maximization, se procederá a estimar los p
 ## Prueba de distribución de mixturas normales
 Una vez que se obtenga los parámetros como la media, la varianza y los pesosse aplicará un test estadístico apropiado para comprobar si la distribución del indicador es una Mixtura de distribuciones normales, dicho test fue realizado por Priscila Guayasamín para la clasificación de cooperativas por segmentos. En el caso en que el test rechace la hipótesis de mixturas de distribuciones normales, se procederá a la transformación de nuestros datos como una logarítmica, Box-Cox, etc.
 
+## Simulación de datos mediante los parámetros obtenidos
+Si mediante el test desarrollado por Priscila se obtiene que hay evidencia estadística para aceptar que la distribución del indicador es una mixtura de normales, se procederá a realizar la simulación de nuevos datos para el indicador de solvencia, en esta simulación se incluirá los parámetros obtenidos por el algoritmo EM y con una distribución de mixtura de normales. Esto servirá para realizar intervalos de confianza del indicador así como constrastes de hipótesis.
+
 
 
 ```{r setup, include=FALSE}
