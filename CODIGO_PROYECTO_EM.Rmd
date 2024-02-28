@@ -13,6 +13,12 @@ Se obtuvo una base de datos de solicitudes de crédito de una Cooperativa import
 ## 2.2 Construcción del Indicador de solvencia
 Dentro de una cooperativa, es importante la representación de la capacidad financiera mediante un indicador, el patrimonio neto representa la cantidad de flujo con la que está a disposición la cooperativa para hacer frente a situaciones futuras. Por lo tanto, dividir el patrimonio neto por los activos totales proporciona una medida de la capacidad de una entidad para cubrir sus obligaciones con sus activos.
 
+Por lo tanto, se construye el indicador de solvencia cómo:
+\begin{equation*}
+I=Patrimonio neto/Activos
+\end{equation*}
+
+
 
 ```{r setup, include=FALSE}
 library(readxl)
