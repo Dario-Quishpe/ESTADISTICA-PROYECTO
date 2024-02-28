@@ -4,6 +4,11 @@ author: "Armando Lara, Dario Quishpe , Jorge Arguello"
 date: "`r Sys.Date()`"
 output: html_document
 ---
+#Introducción
+
+Para una coperativa de ahorro y crédito es fundamental el análisis de La solvencia financiera de sus socios pues es un  factor crítico al evaluar las distintas solicitudes de créditos permitiendo tomar  decisiones sobre las mismas.Estás decisiones tienen impacto directo en los diferentes indicadores que son de gran relevancia en la institución para su monitoreo y supervisión. Dentro de estos se encuentran indicadores de mora por productos crediticios, porcentaje de colocación,riesgo crediticio ,etc.Está medida de solvencia nos proporciona una visión  de la capacidad  que tienen los socios para cumplir con sus obligaciones financieras, ya que en caso de un indicador de solvencia saludable  sugiere una menor probabilidad de incumplimiento en el pago de deudas,  así como también  permite a la cooperativa tomar decisiones de crédito informadas y personalizadas,dando oportunidad de  adaptar los términos del crédito u ofrecer productos convenientes según la solvencia individual.
+
+La coperativa de ahorro y credito denominada "X"  ,en vista de la importancia de la información otorgada por este indicador  a optado por hacer el acompañamiento de tecnicas estadísticas  a las decisiones de los analistas sobre los créditos. El presente proyecto intenta poner como un punto de partida el estudio de este indicador en un conjunto de socios.  
 
 # <span style='color:darkblue;'>2. Metodología</span>
 
@@ -36,6 +41,7 @@ library(tidyverse)
 library(energy)
 library(mixtools)
 library(ks)
+library(plotly)
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -122,6 +128,8 @@ mu<-rbind(em$mu[[1]],em$mu[[2]])
 sigma<-rbind(em$sigma[[1]],em$sigma[[2]])
 test_mixturasnormales(A,mu,sigma,as.vector(em$lambda))
 #save(BASE1,file="BASE_SOLICITUD_DE_CREDITO_2.RData")
+
+plot_ly(x=~datos$Peso, y=~datos$Estatura, z=~densidad,type = "scatter3d", color=densidad, xlab=" ",ylab=" ", zlab=" ") 
 ```
 
 
