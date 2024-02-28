@@ -30,8 +30,13 @@ I=Patrimonio neto/Activos
 
 Se procederá a realizar diversos gráficos y pruebas estadísticas para identificar la distribución de cada variable, incluyendo el indicador de solvencia. El objetivo principal es obtener una distribución que se ajuste a una mixtura de distribuciones normales para nuestro indicador.
 
+## Estimación de parámetros mediante el Algoritmo EM
+Mediante el algoritmo EM Expectation-Maximization, se procederá a estimar los parámetros del indicador de solvencia. Este algoritmo permitirá identificar los parámetros óptimos de la distribución (en un principio desconocida) del indicador de solvencia. Este algoritmo nos será de gran utilidad, pues una vez estimados los parámetros se los usará para hacer inferencia e identificar su distribución.
+
+
 ## Prueba de distribución de mixturas normales
-Para determinar si el indicador de solvencia puede considerarse una mixtura de distribuciones normales, se aplicará un test estadístico apropiado, dicho test fue realizado por Priscila Guayasamín para la clasificación de cooperativas por segmentos. En el caso en que el test rechace la hipótesis de mixturas de distribuciones normales, se procederá a la transformación de nuestros datos como una logarítmica, Box-Cox, etc.
+Una vez que se obtenga los parámetros como la media, la varianza y los pesosse aplicará un test estadístico apropiado para comprobar si la distribución del indicador es una Mixtura de distribuciones normales, dicho test fue realizado por Priscila Guayasamín para la clasificación de cooperativas por segmentos. En el caso en que el test rechace la hipótesis de mixturas de distribuciones normales, se procederá a la transformación de nuestros datos como una logarítmica, Box-Cox, etc.
+
 
 
 ```{r setup, include=FALSE}
