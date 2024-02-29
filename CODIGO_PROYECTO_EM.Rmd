@@ -109,7 +109,7 @@ Para aplicar Montecarlo en la estimación de parámetros se realiza lo siguiente
 
 **Cálculo de estimaciones finales:** Calculamos la media de los estimadores obtenidos en el indicador de cada iteración, esto se hace promediando las medias y varianzas de las muestras generadas para el indicador anteriores.
 
-Finalmente, comparamos los resultados obtenidos con cada metología y su respectiva discusión.
+Finalmente, comparamos los resultados obtenidos con cada metología y su respectiva discusión, detallando así las ventajas y desventajas obtenidas con cada una.
 
 ```{r setup, include=FALSE}
 library(readxl)
