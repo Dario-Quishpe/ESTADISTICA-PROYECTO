@@ -93,35 +93,9 @@ Una vez que se obtenga los parámetros como la media, la varianza y los pesosse 
 Si mediante el test desarrollado por Priscila se obtiene que hay evidencia estadística para aceptar que la distribución del indicador es una mixtura de normales, se procederá a realizar la simulación de nuevos datos para el indicador de solvencia, en esta simulación se incluirá los parámetros obtenidos por el algoritmo EM y con una distribución de mixtura de normales. Esto servirá para realizar intervalos de confianza del indicador así como constrastes de hipótesis.
 
 
-# <span style='color:darkblue;'>2. Metodología</span>
+## Comparación con Montecarlo y Bootstrap
+Una vez obtenidas las estimaciones de los parámetros mediante el algoritmo EM y la distribución de mixturas normales, se procede a comparar los resultados utilizando técnicas de Montecarlo y Bootstrap. Esta comparación abarca tanto las estimaciones de los parámetros como sus intervalos de confianza al 95%, así como el sesgo y el contraste de hipótesis para la media (proporciones de rechazo).
 
-## 2.1 Recolección de los datos
-
-Se obtuvo una base de datos de solicitudes de crédito de una Cooperativa importante del país, la cual contiene información sobre variables relevantes, incluyendo el patrimonio neto y los activos de los solicitantes. Por cuestiones de confidencialidad de los clientes de dicha cooperativa, se omitió las variables con respecto a información personal de los solicitantes, tomando únicamente para nuestro interés en este trabajo sólo las variables que necesitamos.
-
-## 2.2 Construcción del Indicador de solvencia
-
-Dentro de una cooperativa, es importante la representación de la capacidad financiera mediante un indicador, el patrimonio neto representa la cantidad de flujo con la que está a disposición la cooperativa para hacer frente a situaciones futuras. Por lo tanto, dividir el patrimonio neto por los activos totales proporciona una medida de la capacidad de una entidad para cubrir sus obligaciones con sus activos.
-
-Por lo tanto, se construye el indicador de solvencia cómo:
-
-\begin{equation*}
-I=Patrimonio neto/Activos
-\end{equation*}
-
-## 2.3 Análisis Exploratorio
-
-Se procederá a realizar diversos gráficos y pruebas estadísticas para identificar la distribución de cada variable, incluyendo el indicador de solvencia. El objetivo principal es obtener una distribución que se ajuste a una mixtura de distribuciones normales para nuestro indicador.
-
-## Estimación de parámetros mediante el Algoritmo EM
-Mediante el algoritmo EM Expectation-Maximization, se procederá a estimar los parámetros del indicador de solvencia. Este algoritmo permitirá identificar los parámetros óptimos de la distribución (en un principio desconocida) del indicador de solvencia. Este algoritmo nos será de gran utilidad, pues una vez estimados los parámetros se los usará para hacer inferencia e identificar su distribución.
-
-
-## Prueba de distribución de mixturas normales
-Una vez que se obtenga los parámetros como la media, la varianza y los pesosse aplicará un test estadístico apropiado para comprobar si la distribución del indicador es una Mixtura de distribuciones normales, dicho test fue realizado por Priscila Guayasamín para la clasificación de cooperativas por segmentos. En el caso en que el test rechace la hipótesis de mixturas de distribuciones normales, se procederá a la transformación de nuestros datos como una logarítmica, Box-Cox, etc.
-
-## Simulación de datos mediante los parámetros obtenidos
-Si mediante el test desarrollado por Priscila se obtiene que hay evidencia estadística para aceptar que la distribución del indicador es una mixtura de normales, se procederá a realizar la simulación de nuevos datos para el indicador de solvencia, en esta simulación se incluirá los parámetros obtenidos por el algoritmo EM y con una distribución de mixtura de normales. Esto servirá para realizar intervalos de confianza del indicador así como constrastes de hipótesis.
 
 
 
