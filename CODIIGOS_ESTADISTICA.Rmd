@@ -1,0 +1,134 @@
+---
+title: "CODIGOS UTILIZADOS PARA HACER LOS EJERCICIOS PROPUESTOS"
+author: "Armando Lara ,Jorge Arguello,Dario Quishpe"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## EJERCICIO 1 - LITERAL 3,4
+
+```{r}
+## Funci ́on para las prob. betas
+betas <- function(mu, c_i) 1 - pnorm(c_i, mean = mu, sd = sqrt(12))
+#ci calculados te ́oricamente
+c_i <- c(121.1669, 123.82, 127.3375, 123.29)
+#medias
+mu <- seq(121, 130, by = 0.01)
+#obtener betas
+betas_prop <- sapply(c_i, function(ci) betas(mu, ci))
+#Grafica
+plot(mu, betas_prop[,1], type = "l", col = c("blue", "red", "lightblue",
+"orange"),
+ylim = c(0, 1), xlab = 'Valores de mu', ylab = expression(beta[i](mu)),
+main = "Tasa de crecimiento de las probabilidades tipo II")
+colors <- c("blue", "red", "lightblue",'orange')
+for (i in 1:4) {
+lines(mu, betas_prop[, i], col = colors[i - 1])
+}
+legend("bottomright", legend = c(expression(beta[1]), expression(beta[2]),
+expression(beta[3]), expression(beta[4])),
+col = c(colors), lty = 1)
+```
+
+## EJERCICIO 2 - LITERAL 3 SIMULACION
+
+```{r}
+# simulacion
+set.seed(1) #Semillita
+n <- 1000# numero de datos por simular
+#paramerametros del enunciado
+mu <- 0
+sigma_2 <- 1 # es igual sd
+t <- 1
+# ECUMV y EMV SIMULAODOS
+vals_simu <- rnorm(n, mu, sigma_2)
+ecumv_simu <- pnorm(t, mean = vals_simu, sd = sigma_2)
+emv_estimates <- ecumv_simu # En este caso, son iguales
+# ECM , Sesgo
+val <- pnorm(t, mean = mu, sd = sigma_2)
+ECMecumv <- mean((ecumv_simu - val)^2)
+ECMemv <- ECMecumv # Caso particular EMV=ECUMV
+SESGOecumv <- mean(ecumv_simu) - val
+# Imprimir resultados
+cat("Error cuadradtico medio:ECUMV - EMV:", ECMecumv, "\n")
+## Error cuadradtico medio:ECUMV - EMV: 0.06484548
+#Sesgo resultante del ECUMV
+cat("Sesgo de ECUMV:", SESGOecumv, "\n")
+## Sesgo de ECUMV: -0.08237049
+```
+
+
+
+## EJERCICIO 6 - LITERAL 2 SIMULACION
+
+```{r}
+# Semillita
+set.seed(1)
+
+#  muestra generada
+n<-100
+alpha<-0.05
+sample <- rnorm(n)
+
+# Funcion de distribucion empirica  F_n(x)
+empirical_distribution <- ecdf(sample)
+
+# FUNCION TEORICA
+theoretical_distribution <- ecdf(rnorm(1000))  # mientras mas grande el n mejor
+
+#Calculando  D_n
+kolmogorov_smirnov_statistic <- function(sample, cdf) {
+  max(abs(cdf(sample) - empirical_distribution(sample)))
+}
+# Simulacion
+D_n <- kolmogorov_smirnov_statistic(sample, theoretical_distribution)
+# Valor critico para  Kolmogorov-Smirnov test
+critical_value <- qnorm(1 - alpha / 2) / sqrt(n)
+# Prueba de hipotesis
+test_result <- ifelse(D_n > critical_value, "Rechazar H0", "No se rechaza H0")
+# Ploteo de la funcion de distribucion empirica
+x_values <- seq(min(sample), max(sample), length.out = 1000)
+empirical_cdf_values <- empirical_distribution(x_values)
+plot(x_values, empirical_cdf_values, type = 'l', col = 'blue', lwd = 2, 
+     main = sprintf('Simulacion: D_n = %.4f\nValor Critico = %.4f\n%s\nAlpha=%.2f', D_n, critical_value, test_result,alpha))
+
+
+```
+
+
+
+```{r}
+
+Contenedor<-matrix(nrow=27,ncol=3)
+colnames(Contenedor)<-c("10%","5%","1%")
+k<-500
+for(n in c(4:30)){
+AUX<-c(0)
+  for(i in 1:k){
+    X<-rnorm(n)
+    u<-mean(X)
+    Sd<-sd(X)
+    F_n<-ecdf(X)
+    Y<-sort(X)
+    Fempirica<-pnorm((Y-u)/Sd) 
+    AUX1<-max(abs(Fempirica-F_n(Y)))
+    Fn_1<-c(0,F_n(Y[1:n-1]))
+    AUX2<-max(abs(Fempirica-Fn_1))
+    AUX[i]=max(AUX1,AUX2)
+  }
+#Calculo de los cuantiles
+Contenedor[n-3,1]=quantile(AUX,0.90)
+Contenedor[n-3,2]=quantile(AUX,0.95)
+Contenedor[n-3,3]=quantile(AUX,0.99)
+}
+Contenedor
+```
+
+
+
+
+

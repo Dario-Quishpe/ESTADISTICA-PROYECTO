@@ -129,10 +129,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r include=FALSE}
 
-#base<-read_xlsx("Solicitudes_Crédito.xlsx")
-#dim(base)
+
 load("BASE_SOLICITUD_DE_CREDITO.RData")
-#BASE1
+
 ```
 
 ```{r}
@@ -180,7 +179,7 @@ return(p.value)
 }
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 G1<-ggplot(data.frame(x = BASE1$TOTAL_PATRIMONIO_NETO), aes(x)) +
   geom_histogram(aes(y = ..density..), bins = 20, color = "white", fill = "lightblue", alpha = 0.7) +geom_density(color = "darkred", size = 1) + labs(title = "Total Patrimonio Neto")
 
@@ -207,20 +206,21 @@ grid.arrange(G5,G6,G7,G8)
 ```
 
 ```{r echo=FALSE}
-#BASE1
-dim(BASE1)
 a<-(BASE1$Alog)
 b<-(BASE1$Blog)
-dim(BASE1)
 A<-matrix(c(a,b),nrow=660 ,ncol=2)#Con logaritmo funciono
 set.seed(123)
 data <- A
 rownames(data) <- paste0("Obs", 1:nrow(data))
 colnames(data) <- c("Var1", "Var2")
+#APLICAMOS EL ALGORTIMO EM
 em<-mvnormalmixEM(A)
+#OBTENCION DE LAS ESTIMACIONES DE LOS PARAMETROS
 mu<-rbind(em$mu[[1]],em$mu[[2]])
 sigma<-rbind(em$sigma[[1]],em$sigma[[2]])
+#TEST AD , PARA DETERMINAR MIXTURAS NORMALES
 p<-test_mixturasnormales(A,mu,sigma,as.vector(em$lambda))
+#PRIMERA SIMULACION DE DATOS QUE VIENEN DE UNA MIXTURA DE NORMALES
 dat<-rmvnorm.mixt(5000,mus = mu,Sigmas = sigma,props = as.vector(em$lambda))
 ```
 
@@ -228,15 +228,15 @@ dat<-rmvnorm.mixt(5000,mus = mu,Sigmas = sigma,props = as.vector(em$lambda))
 ```{r}
 densidad_Originales<-dmvnorm.mixt(A,mus =mu,Sigmas = sigma,props = as.vector(em$lambda))
 densidad_Simulados<-dmvnorm.mixt(dat,mus =mu,Sigmas = sigma,props = as.vector(em$lambda))
-plot_ly(x=~BASE1$Alog, y=~BASE1$Blog, z=~densidad_Originales,type = "scatter3d", color=densidad_Originales) 
+#plot_ly(x=~BASE1$Alog, y=~BASE1$Blog, z=~densidad_Originales,type = "scatter3d", color=densidad_Originales) 
 
-plot_ly(x=~dat[,1], y=~dat[,2], z=~densidad_Simulados,type = "scatter3d", mode="markers",color=densidad_Simulados) |> 
-layout(xaxis = list(title = "Eje X"), yaxis = list(title = "Eje Y")) |> show()
+#plot_ly(x=~dat[,1], y=~dat[,2], z=~densidad_Simulados,type = "scatter3d", mode="markers",color=densidad_Simulados) |> 
+#layout(xaxis = list(title = "Eje X"), yaxis = list(title = "Eje Y")) |> show()
 ```
 
 
 
-```{r}
+```{r include=FALSE}
 #MONTECARLO
 media<-vector(length = 5000)
 var<-vector(length = 5000)
@@ -248,6 +248,7 @@ media[i]<-mean(indicador_sim)
 var[i]<-var(indicador_sim)
 sd[i]<-sd(indicador_sim)
 }
+#Estimaciones con variables Transformadas
 liminfMonte<-quantile(media,0.025)
 limisupMonte<-quantile(media,1-0.025)
 MediaMonte<-mean(media)
@@ -258,7 +259,7 @@ limisupMonte
 MediaMonte
 Var_Montemean
 SdMonte
-#Valores retransformados 
+#Estimaciones con variables retransformadas
 LIINF<-exp(liminfMonte)
 LIMSUP<-exp(limisupMonte)
 MEDIA<-exp(MediaMonte)
@@ -271,15 +272,13 @@ VAR
 SD
 ```
 
-```{r}
-var(BASE1$IndSolvencia)
-sd(BASE1$IndSolvencia)
-mean(BASE1$IndSolvencia)
 
-```
 
 
 ```{r echo=FALSE}
+
+#COMPARACION DE LA DISTRIBUCION DE LA MUESTRA
+#CON LA AJUSTADA MEDIANTE EL ALGORITMO EM Y MONTECARLO
 plot(density(indicador_sim),col="red")
 lines(density(BASE1$indlog),col="blue")
 legend("topright", legend = c("MUESTRA", "Montecarlo"), col = c("blue", "red"), lty = c(1, 1))
@@ -318,8 +317,8 @@ legend("topright", legend = c("MUESTRA", "Montecarlo"), col = c("blue", "red"), 
     \end{tabular}
 \end{table}
 
-```{r}
-#SESGO
+```{r include=FALSE}
+#CALCULO DEL SESGO DE VARIABLES RETRANSFORMADAS
 SesgoMedia<-MEDIA-mean(BASE1$IndSolvencia)
 SesgoVar<-VAR-var(BASE1$IndSolvencia)
 SesgoSd<-SdMonte-sd(BASE1$IndSolvencia)
@@ -332,9 +331,10 @@ SesgoSd
 ```
 
 
-```{r}
+```{r echo=FALSE}
 #CONTRASTE DE HIPOTESIS datos transformados(log)
 #HO:mu=-0.34
+#Ha:mu=\-0.34
 numsimu<-1000
 pvalue<-numeric(numsimu)
 for (i in 1:numsimu){
@@ -352,37 +352,27 @@ cat("\nProporción de rechazos al 10%=",mean(pvalue<0.1),"\n")
 ```
 
 
-```{r echo=FALSE}
+```{r include=FALSE}
 
-
-#mvnorm.kur.test(A,n.simu = 1000)
-#qqPlot(data, main = "Q-Q Plot Multivariado")
-# Realizar la prueba de normalidad multivariante
-#mvn(data, mvnTest = "hz",covariance = TRUE, showOutliers = TRUE,multivariatePlot = TRUE,tol=0.005)
+#Test extra -mixtura de normales  Valores originales
 N<-mvn(data, mvnTest = "mardia",multivariatePlot = "persp",tol =0.005)
 M<-mvn(data, mvnTest = "mardia",multivariatePlot = "qq",tol =0.005 )
 O<-mvn(data, mvnTest = "mardia",multivariatePlot = "contour",tol =0.005 )
-# Mostrar los resultados
-#print(result)
+
 
 ```
 
 
 
-```{r echo=FALSE}
+
+```{r include=FALSE}
+#test Extra-mixtura de normales Valores simulados
 data<-dat
-#mvnorm.kur.test(dat,n.simu = 1000)
-#qqPlot(data, main = "Q-Q Plot Multivariado")
-# Realizar la prueba de normalidad multivariante
-#mvn(data, mvnTest = "hz",covariance = TRUE, showOutliers = TRUE,multivariatePlot = TRUE,tol=0.005)
 R<-mvn(data, mvnTest = "mardia", showOutliers = TRUE,multivariatePlot = "persp",tol =0.005,transform = "log" )
 S<-mvn(data, mvnTest = "mardia", showOutliers = TRUE,multivariatePlot = "qq",tol =0.005 )
 Q<-mvn(data, mvnTest = "mardia", showOutliers = TRUE,multivariatePlot = "contour",tol =0.005 )
 
 ```
-
-
-
 
 
 
@@ -392,7 +382,6 @@ library(readxl)
 library(tidyverse)
 library(dplyr)
 library(boot)
-
 
 
 #Cargar la base
