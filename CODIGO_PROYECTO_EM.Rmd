@@ -163,9 +163,18 @@ em<-mvnormalmixEM(A)
 mu<-rbind(em$mu[[1]],em$mu[[2]])
 sigma<-rbind(em$sigma[[1]],em$sigma[[2]])
 p<-test_mixturasnormales(A,mu,sigma,as.vector(em$lambda))
+
 ```
 
 
+```{r}
+densidad_Originales<-dmvnorm.mixt(A,mus =mu,Sigmas = sigma,props = as.vector(em$lambda))
+densidad_Simulados<-dmvnorm.mixt(dat,mus =mu,Sigmas = sigma,props = as.vector(em$lambda))
+plot_ly(x=~BASE1$Alog, y=~BASE1$Blog, z=~densidad_Originales,type = "scatter3d", color=densidad_Originales) 
+
+plot_ly(x=~dat[,1], y=~dat[,2], z=~densidad_Simulados,type = "scatter3d", mode="markers",color=densidad_Simulados) |> 
+layout(xaxis = list(title = "Eje X"), yaxis = list(title = "Eje Y")) |> show()
+```
 
 
 
