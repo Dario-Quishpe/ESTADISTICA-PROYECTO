@@ -12,7 +12,6 @@ output:
   html_document: default
 header-includes:
    - \usepackage{graphicx}
-   
 ---
 
 # Introducción
@@ -39,7 +38,7 @@ Mediante la colaboración del jefe del área de fábrica de credito de la cooper
   
 Por cuestiones de confidencialidad de los  clientes de dicha cooperativa, se omitió las variables con respecto a información personal  , tomando únicamente para nuestro interés en este trabajo sólo las dos  variables para generar el indicador  .
 
-##Construcción del Indicador de solvencia
+## Construcción del Indicador de solvencia
 
 Dentro de una cooperativa, es importante la representación de la capacidad financiera mediante un indicador, el patrimonio neto representa la cantidad de flujo con la que está a disposición la cooperativa para hacer frente a situaciones futuras. Por lo tanto, dividir el patrimonio neto por los activos totales proporciona una medida de la capacidad de un socio  para cubrir sus obligaciones con sus activos.
 
@@ -82,24 +81,26 @@ Vamos a aproximar el sesgo y la varianza:
 
 ## Estimación de parámetros mediante el Algoritmo EM
 
-Mediante el algoritmo EM Expectation-Maximization, se procederá a estimar los parámetros del indicador de solvencia. Este algoritmo permitirá identificar los parámetros óptimos de la distribución (en un principio desconocida) del indicador de solvencia. Este algoritmo nos será de gran utilidad, pues una vez estimados los parámetros se los usará para hacer inferencia e identificar su distribución.
+Mediante el algoritmo EM Expectation-Maximization, se procederá a estimar los parámetros del indicador de solvencia de la supoblación. Este algoritmo permitirá identificar los parámetros óptimos de la distribución (en un principio desconocida) del indicador de solvencia. Este algoritmo nos será de gran utilidad, pues una vez estimados los parámetros se los usará para hacer inferencia e identificar su distribución.
 
 
 ## Prueba de distribución de mixturas normales
-Una vez que se obtenga los parámetros como la media, la varianza y los pesosse aplicará un test estadístico apropiado para comprobar si la distribución del indicador es una Mixtura de distribuciones normales, dicho test fue realizado por Priscila Guayasamín para la clasificación de cooperativas por segmentos. En el caso en que el test rechace la hipótesis de mixturas de distribuciones normales, se procederá a la transformación de nuestros datos como una logarítmica, Box-Cox, etc.
+
+Una vez que se obtenga los parámetros como la media, la varianza y los pesos se  aplicará un test estadístico apropiado para comprobar si la distribución del indicador es una Mixtura de distribuciones normales, dicho test fue realizado por Priscila Guayasamín para la clasificación de cooperativas por segmentos [1]. En el caso en que el test rechace la hipótesis de mixturas de distribuciones normales, se procederá a realizar una  transformación de nuestros datos para lograr adaptarlos lo mejor posible al desarrollo del proyecto.
 
 ## Simulación de datos mediante los parámetros obtenidos
 
-Si mediante el test desarrollado por Priscila se obtiene que hay evidencia estadística para aceptar que la distribución del indicador es una mixtura de normales, se procederá a realizar la simulación de nuevos datos para el indicador de solvencia, en esta simulación se incluirá los parámetros obtenidos por el algoritmo EM y con una distribución de mixtura de normales. Esto servirá para realizar intervalos de confianza del indicador así como constrastes de hipótesis.
+Si mediante el test adaptado en [1] se obtiene que  no hay suficiente evidencia estadística para rechazar el hecho de  que la distribución del indicador es una mixtura de normales, se procederá a realizar la simulación de nuevos datos obtenidos de dichas simulaciones con el fin de poder construir el indicador de solvencia, en esta simulación se incluirá los parámetros obtenidos por el algoritmo EM y con una distribución de mixtura de normales. Esto servirá para realizar las estimaciones intervalos de confianza del indicador así como constrastes de hipótesis.
 
 
 ## Comparación con Montecarlo y Bootstrap
+
 Una vez obtenidas las estimaciones de los parámetros mediante el algoritmo EM y la distribución de mixturas normales, se procede a comparar los resultados utilizando técnicas de Montecarlo y Bootstrap. Esta comparación abarca tanto las estimaciones de los parámetros como sus intervalos de confianza al 95%, así como el sesgo y el contraste de hipótesis para la media (proporciones de rechazo).
 
 Para aplicar Montecarlo en la estimación de parámetros se realiza lo siguiente:
 
  
-**Generación de datos aleatorios:** Generamos un conjunto de datos aleatorios para las variables patrimonio neto y activos. En nuestro caso una mixtura de normales, con los parámetros que se obtuvo del algoritmo EM.
+**Generación de datos aleatorios:**  Generamos un conjunto de datos aleatorios para las variables patrimonio neto y activos. En nuestro caso una mixtura de normales, con los parámetros que se obtuvo del algoritmo EM.
 
 
 **Muestras:** Realizamos múltiples muestras aleatorias de tamaño `n` de estas variables generado en el paso anterior. Estas muestras deben tomarse con reemplazo, es decir, cada observación puede ser seleccionada más de una vez en la muestra.
@@ -110,6 +111,13 @@ Para aplicar Montecarlo en la estimación de parámetros se realiza lo siguiente
 **Cálculo de estimaciones finales:** Calculamos la media de los estimadores obtenidos en el indicador de cada iteración, esto se hace promediando las medias y varianzas de las muestras generadas para el indicador anteriores.
 
 Finalmente, comparamos los resultados obtenidos con cada metología y su respectiva discusión, detallando así las ventajas y desventajas obtenidas con cada una.
+
+
+# Experimentación 
+
+
+En primer lugar se requiere ajustar el indicador de solvencia muestral a una distribución multivariante . Para ello se realiza el test AD modificado en  [1]  obteniendo para los datos originales obteniendo  un **valor-p** de 5e+7 , practicamente cero , por lo cual rechazamos la hipotesis nula es decir  los datos no provienen de una distribución de mixturas normales . En vista de esto se generan varias transformaciones sobre las variables que se requieren para generar el indicador con lo cual se llegó a la conclusión de que la más conveniente y óptimo para nuestros datos es una transformacion
+**Logaritmo** como se ve a continuación
 
 ```{r setup, include=FALSE}
 library(readxl)
@@ -124,17 +132,21 @@ library(gridExtra)
 library(MVN)
 library(ICS)
 library(car)
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
 ```
 
-```{r include=FALSE}
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
 
 
 load("BASE_SOLICITUD_DE_CREDITO.RData")
 
 ```
 
-```{r}
+```{r include=FALSE}
 test_mixturasnormales<-function(data,mus,sigmapob,lambdapob){
 if (!is.data.frame(data) && !is.matrix(data))
 stop('data supplied must be either of class \"data frame\" or \"matrix\"')
@@ -205,7 +217,14 @@ grid.arrange(G5,G6,G7,G8)
 
 ```
 
-```{r echo=FALSE}
+Realizando esta transformación optenemos un **valor-p** de 0.4748 lo cual nos indica que no hay suficiente evidencia estadística para rechazar la hipotesis nula , por tanto los datos provienen de una distribución de mixturas normales.
+
+
+Ya con esto se procede a ejecutar el algoritmo EM con el cual se encuentra los parámetros de la distribución normal multivariante.Las medias y matrices de varianza y covarianza de la subpoblación son las siguientes
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 a<-(BASE1$Alog)
 b<-(BASE1$Blog)
 A<-matrix(c(a,b),nrow=660 ,ncol=2)#Con logaritmo funciono
@@ -223,20 +242,57 @@ p<-test_mixturasnormales(A,mu,sigma,as.vector(em$lambda))
 #PRIMERA SIMULACION DE DATOS QUE VIENEN DE UNA MIXTURA DE NORMALES
 dat<-rmvnorm.mixt(5000,mus = mu,Sigmas = sigma,props = as.vector(em$lambda))
 ```
+\[\mu_1=[9.850069 ;10.47885]\]
+\[\mu_2=[10.032998; 10.12234]\]
+
+\[
+\sum_1 = \begin{bmatrix}
+   1.025812 & 0.8741010 \\
+   0.874101& 0.8984864 \\
+\end{bmatrix}
+\]
+\[
+\sum_2 = \begin{bmatrix}
+   1.352622 & 1.3783079 \\
+   1.378308 & 1.4139173  \\
+\end{bmatrix}
+\]
+
+y los pesos correspondientes  son 
+
+\[\lambda_1=0.4434142 ; \lambda_2= 0.5565858\]
+
+los resultados de este ajuste lo podemos ver a continuación
 
 
-```{r}
-densidad_Originales<-dmvnorm.mixt(A,mus =mu,Sigmas = sigma,props = as.vector(em$lambda))
+```{r message=FALSE, warning=FALSE, include=FALSE}
+densidad_LOG_Originales<-dmvnorm.mixt(A,mus =mu,Sigmas = sigma,props = as.vector(em$lambda))
 densidad_Simulados<-dmvnorm.mixt(dat,mus =mu,Sigmas = sigma,props = as.vector(em$lambda))
-#plot_ly(x=~BASE1$Alog, y=~BASE1$Blog, z=~densidad_Originales,type = "scatter3d", color=densidad_Originales) 
+#plot_ly(x=~BASE1$Alog, y=~BASE1$Blog, z=~densidad_LOG_Originales,type = "scatter3d", color=densidad_LOG_Originales) 
 
 #plot_ly(x=~dat[,1], y=~dat[,2], z=~densidad_Simulados,type = "scatter3d", mode="markers",color=densidad_Simulados) |> 
 #layout(xaxis = list(title = "Eje X"), yaxis = list(title = "Eje Y")) |> show()
 ```
 
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{simulados.png}
+  \caption{Densidad Simulados}
+  \label{fig:etiqueta}
+\end{figure}
+
+También podemos observar la gráfica correspondiente a los datos originales transformados
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\linewidth]{originales.jpg}
+  \caption{Densidad Originales transformados.}
+  \label{fig:etiqueta}
+\end{figure}
 
 
-```{r include=FALSE}
+Del procedimiento anterior encontramos una distribución exacta (mixtura de normales multivariante) que describe la distribución entre el patrimonio neto transformado y los activos transformados . Ahora mediante  Montecarlo simulamos los datos requeridos para la construcción del indicador de solvencia.
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
 #MONTECARLO
 media<-vector(length = 5000)
 var<-vector(length = 5000)
@@ -279,10 +335,12 @@ SD
 
 #COMPARACION DE LA DISTRIBUCION DE LA MUESTRA
 #CON LA AJUSTADA MEDIANTE EL ALGORITMO EM Y MONTECARLO
-plot(density(indicador_sim),col="red")
+plot(density(indicador_sim),col="red",main="Distribución del indicador de Solvencia")
 lines(density(BASE1$indlog),col="blue")
 legend("topright", legend = c("MUESTRA", "Montecarlo"), col = c("blue", "red"), lty = c(1, 1))
 ```
+
+Finalmente presentamos los resultados obtenidos de las simulaciones realizadas
 
 \begin{table}[!h]
     \centering
@@ -295,9 +353,11 @@ legend("topright", legend = c("MUESTRA", "Montecarlo"), col = c("blue", "red"), 
     \end{tabular}
 \end{table}
 
+Para el entendimiento de los resultados retransformamos los valores estimados 
+
 \begin{table}[!h]
     \centering
-    \caption{\textbf{Estimaciones por Montecarlo y Bootstrap (Datos Originales)}}
+    \caption{\textbf{Estimaciones por Montecarlo y Bootstrap (Datos Retransformados)}}
     \begin{tabular}{|l|l|l|l|l|l|}
     \hline
         Método & Media & Var & Sd & LINF & LSUP \\ \hline
@@ -306,9 +366,11 @@ legend("topright", legend = c("MUESTRA", "Montecarlo"), col = c("blue", "red"), 
     \end{tabular}
 \end{table}
 
+Podemos observar que el metodo por Montecarlo es más angosto que bootstrap , pero en cambio este último presenta sesgos bastante pequeños como se muestra a continuación.
+
 \begin{table}[!h]
     \centering
-    \caption{\textbf{Estimaciones por Montecarlo y Bootstrap (Datos Originales)}}
+    \caption{\textbf{Estimaciones por Montecarlo y Bootstrap (Datos Retransformados)}}
     \begin{tabular}{|l|l|l|l|}
     \hline
         Método & SESGO MEDIA & SESGO Varianza & SESGO Sd  \\ \hline
@@ -317,7 +379,10 @@ legend("topright", legend = c("MUESTRA", "Montecarlo"), col = c("blue", "red"), 
     \end{tabular}
 \end{table}
 
-```{r include=FALSE}
+
+
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
 #CALCULO DEL SESGO DE VARIABLES RETRANSFORMADAS
 SesgoMedia<-MEDIA-mean(BASE1$IndSolvencia)
 SesgoVar<-VAR-var(BASE1$IndSolvencia)
@@ -330,19 +395,27 @@ SesgoVar
 SesgoSd
 ```
 
+Para la prueba de hipótesis el jefe según su experiencia segura que el indice de solvencia en promedio es igual $72\%$ . Por lo cual nuestra prueba de hipótesis viene dada por 
 
-```{r echo=FALSE}
+
+
+\[ H_0: \theta = 0.72 \]
+\[ H_a: \theta \neq 0.72 \]
+
+Donde $\theta $ representa la media poblacional de nuestro estimador.
+
+```{r echo=FALSE, warning=FALSE}
 #CONTRASTE DE HIPOTESIS datos transformados(log)
-#HO:mu=-0.34
-#Ha:mu=\-0.34
+#HO:mu=-0.3285041
+#Ha:mu=\-0.3285041
 numsimu<-1000
 pvalue<-numeric(numsimu)
 for (i in 1:numsimu){
 dat<-rmvnorm.mixt(5000,mus = mu,Sigmas = sigma,props = as.vector(em$lambda))
 indicador_sim<-dat[,1]-dat[,2]
 ind<-(indicador_sim)
-estadistico<-(mean(ind)+0.34)/(sd(ind)/sqrt(5000))
-p<-1-pt(abs(estadistico),5000-1)+pt(-abs(estadistico),5000-1)
+estadistico<-(mean(ind)+0.3285041)/(sd(ind)/sqrt(5000))
+p<- 1-pt(abs(estadistico),5000-1)+pt(-abs(estadistico),5000-1)
 pvalue[i]<-p
 }
 
@@ -351,10 +424,13 @@ cat("\nProporción de rechazos al 5%=",mean(pvalue<0.05),"\n")
 cat("\nProporción de rechazos al 10%=",mean(pvalue<0.1),"\n")
 ```
 
+Esta salida proporciona información sobre la tasa de rechazo bajo diferentes niveles de significancia, lo que es  útil para evaluar el poder estadístico del procedimiento.
+
+
 
 ```{r include=FALSE}
 
-#Test extra -mixtura de normales  Valores originales
+#Test extra -mixtura de normales  Valores originales con logaritmo 
 N<-mvn(data, mvnTest = "mardia",multivariatePlot = "persp",tol =0.005)
 M<-mvn(data, mvnTest = "mardia",multivariatePlot = "qq",tol =0.005 )
 O<-mvn(data, mvnTest = "mardia",multivariatePlot = "contour",tol =0.005 )
@@ -524,7 +600,66 @@ npden <- density(x, bw = h)
 ```
 
 
+# Conslusiones y recomendaciones 
+
+
+# Anexos
+
+```{r eval=TRUE, include=FALSE}
+
+#TEST AD MODIFICADO 
+test_mixturasnormales<-function(data,mus,sigmapob,lambdapob){
+if (!is.data.frame(data) && !is.matrix(data))
+stop('data supplied must be either of class \"data frame\" or \"matrix\"')
+if (dim(data)[2] < 2 || is.null(dim(data)))
+{stop("data dimesion has to be more than 1")}
+if (dim(data)[1] < 3) {stop("not enough data for assessing mvn")}
+data.name <- deparse(substitute(data))
+xp <- as.matrix(data)
+p <- dim(xp)[2]
+n <- dim(xp)[1]
+## getting MLEs...
+s.mean <- colMeans(xp)
+s.cov <- (n-1)/n*cov(xp)
+s.cov.inv <- solve(s.cov) # inverse matrix of S (matrix of sample covariances)
+D <- rep(NA,n) # vector of (Xi-mu)'S^-1(Xi-mu)...
+for (j in 1:n)
+D[j] <- t(xp[j,]-s.mean) %*%(s.cov.inv %*%(xp[j,]-s.mean))
+D.or <- sort(D) ## get ordered statistics
+Gp <- pchisq(D.or,df=p)
+## getting the value of A-D test...
+ind <- c(1:n)
+an <- (2*ind-1)*(log(Gp[ind])+log(1 - Gp[n+1-ind]))
+AD <- -n - sum(an) / n
+## getting the p-value...
+N <- 1e4
+U <- rep(0,N) ## initializing values of the AD test
+for (i in 1:N) { ## loop through N reps
+dat<-rmvnorm.mixt(1000, mus=mus, Sigmas=sigmapob, props=lambdapob)
+mean1 <- colMeans(dat)
+cov1 <- (n-1)/n*cov(dat)
+cov.inv <- solve(cov1) # inverse matrix of S (matrix of sample covariances)
+D <- rep(NA,n) # vector of (Xi-mu)'S^-1(Xi-mu)...
+for (j in 1:n)
+D[j] <- t(data[j,]-mean1)%*%(cov.inv %*%(data[j,]-mean1))
+Gp <- pchisq(sort(D),df=p)
+## getting the value of A-D test...
+an <- (2*ind-1)*(log(Gp[ind])+log(1 - Gp[n+1-ind]))
+U[i] <- -n - sum(an) / n
+}
+p.value <- (sum(U >= AD)+1)/(N+1)
+return(p.value)
+}
+```
 
 
 
+# Referencias
+
+
+*[1]* Guayasamín, P. (17 de septiembre de 2023). Simulación Montecarlo y Bootstrap: Cooperativas deterioradas en el indicador de liquidez diciembre 2022 - enero 2023.
+
+*[2]* Fernández-Casal, R., Cao, R., & Costa, J. (2023). Técnicas de Simulación y Remuestreo (github). Recuperado de [https://rubenfcasal.github.io/simbook/]
+
+*[3]* Cao, R., & Fernández-Casal, R. (2021). Técnicas de Remuestreo (github). Recuperado de [https://rubenfcasal.github.io/book_remuestreo/]
 

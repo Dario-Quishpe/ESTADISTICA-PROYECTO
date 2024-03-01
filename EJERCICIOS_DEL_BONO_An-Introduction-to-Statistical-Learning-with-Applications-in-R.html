@@ -427,11 +427,11 @@ for (i in 1:10000) {
   store[i] &lt;- sum(sample(1:100, replace = TRUE) == 4) &gt; 0
 }
 mean(store)</code></pre>
-<pre><code>## [1] 0.6318</code></pre>
+<pre><code>## [1] 0.6273</code></pre>
 <p>Comenta sobre los resultados obtenidos.</p>
 <pre class="r"><code>store &lt;- replicate(10000, sum(sample(1:100, replace = TRUE) == 4) &gt; 0)
 mean(store)</code></pre>
-<pre><code>## [1] 0.6408</code></pre>
+<pre><code>## [1] 0.6372</code></pre>
 <p>La probabilidad de incluir el <span class="math inline">\(4\)</span>
 al remuestrear números del <span class="math inline">\(1\)</span> al
 <span class="math inline">\(100\)</span> se acerca a <span class="math inline">\(1 - \left(1 -
