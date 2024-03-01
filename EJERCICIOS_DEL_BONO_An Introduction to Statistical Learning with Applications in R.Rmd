@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Capitulo 5 - Ejercicio 2
 
-Ahora derivaremos la probabilidad de que una observación dada sea parte de una muestra bootstrap. Supongamos que obtenemos una muestra bootstrap a partir de un conjunto de n observaciones.
+Ahora la probabilidad de que una observación dada sea parte de una muestra bootstrap. Supongamos que obtenemos una muestra bootstrap a partir de un conjunto de n observaciones.
 
 **a.** ¿Cuál es la probabilidad de que la primera observación bootstrap **no** sea la $j$-ésima observación de la muestra original? Justifica tu respuesta.
 

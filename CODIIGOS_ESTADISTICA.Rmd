@@ -6,7 +6,24 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+library(readxl)
+library(tidyverse)
+library(tidyverse)
+library(energy)
+library(mixtools)
+library(ks)
+library(plotly)
+library(gridExtra)
+# Cargar el paquete MVN
+library(MVN)
+library(ICS)
+library(car)
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
+```
 ```
 
 ## EJERCICIO 1 - LITERAL 3,4
