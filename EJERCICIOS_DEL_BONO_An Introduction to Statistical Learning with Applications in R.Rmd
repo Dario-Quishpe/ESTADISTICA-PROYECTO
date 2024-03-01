@@ -1,6 +1,6 @@
 ---
 title: "EJERCICIOS DEL BONO (An Introduction to Statistical Learning with Applications in R)"
-author: "Dario Quishpe"
+author: "Armando Lara , Jorge Arguello,Dario Quishpe"
 date: "`r Sys.Date()`"
 output: html_document
 ---
