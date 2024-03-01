@@ -601,8 +601,15 @@ npden <- density(x, bw = h)
 
 
 # Conslusiones y recomendaciones 
+\begin{itemize}
+\item En los resultados se observó que los intervalos de confianza de los parámetros son más cortos que los generados por Bootstrap, sin embargo presentan un sesgo mayor sobretodo en la varianza, esto implica que si bien las estimaciones de Montecarlo son más estrechas, pueden estar sujetas a una mayor variabilidad y posiblemente a un mayor grado de error.
+\item  Los intervalos de confianza con Montecarlo podrían brindar una sensación de mayor certeza en las estimaciones de solvencia, lo que podría generar confianza entre los socios y la Cooperativa "X". Sin embargo, es crucial tener en cuenta el sesgo y la variabilidad asociados con estas estimaciones. 
+\item Mediante los resultados, se obtiene con Montecarlo que en promedio, un socio de la coopeartiva tiene indicador de solvencia de 0.72, estonces se podría decir que los socios tienen una base financiera sólida en la cooperativa. Esto podría implicar que tienen una capacidad relativamente buena para cumplir con sus obligaciones financieras y participar en actividades de inversión y toma de decisiones dentro de la cooperativa.
+Sin embargo, considerando que su sesgo en la variabilidad es más alta comparado con Bootstrap, las estimaciones tienden a sobrevalorar la solvencia financiera, lo que podría llevar a decisiones financieras erróneas si se basan únicamente en estas estimaciones sesgadas.
+\item En este proyecto se ha omitido factores externos de la cooperativa, como infraestructura, edad de los socios, condición financiera actual de la empresa, etc. Por lo que sería recomendable considerar estos factores para resultados más realistas sobre las inferencias que se pueda obtener del indicador.
 
 
+\end{itemize}
 # Anexos
 
 ```{r eval=TRUE, include=FALSE}
