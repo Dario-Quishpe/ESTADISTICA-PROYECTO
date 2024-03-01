@@ -2,12 +2,14 @@
 title: "PROYECTO FINAL DE ESTADISTICA MATEMATICA"
 author: "Armando Lara, Dario Quishpe , Jorge Arguello"
 date: "`r Sys.Date()`"
+lang: es
 output:
   pdf_document: 
     latex_engine: xelatex
     fig_caption: true
     fig_height: 3.5
     toc: true
+    #fontsize: 14pt
     number_sections: true
   html_document: default
 header-includes:
@@ -224,7 +226,7 @@ Ya con esto se procede a ejecutar el algoritmo EM con el cual se encuentra los p
 
 
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
+```{r message=FALSE, warning=FALSE, include=FALSE}
 a<-(BASE1$Alog)
 b<-(BASE1$Blog)
 A<-matrix(c(a,b),nrow=660 ,ncol=2)#Con logaritmo funciono
@@ -294,6 +296,7 @@ Del procedimiento anterior encontramos una distribución exacta (mixtura de norm
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
 #MONTECARLO
+set.seed(123)
 media<-vector(length = 5000)
 var<-vector(length = 5000)
 sd<-vector(length = 5000)
@@ -402,12 +405,13 @@ Para la prueba de hipótesis el jefe según su experiencia segura que el indice 
 \[ H_0: \theta = 0.72 \]
 \[ H_a: \theta \neq 0.72 \]
 
-Donde $\theta $ representa la media poblacional de nuestro estimador.
+Donde$\theta$ representa la media poblacional de nuestro estimador.
 
 ```{r echo=FALSE, warning=FALSE}
 #CONTRASTE DE HIPOTESIS datos transformados(log)
 #HO:mu=-0.3285041
 #Ha:mu=\-0.3285041
+set.seed(123)
 numsimu<-1000
 pvalue<-numeric(numsimu)
 for (i in 1:numsimu){
@@ -459,7 +463,7 @@ library(tidyverse)
 library(dplyr)
 library(boot)
 
-
+set.seed(123)
 #Cargar la base
 load('BASE_SOLICITUD_DE_CREDITO.RData')
 
