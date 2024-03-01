@@ -284,6 +284,7 @@ densidad_Simulados<-dmvnorm.mixt(dat,mus =mu,Sigmas = sigma,props = as.vector(em
 \end{figure}
 
 También podemos observar la gráfica correspondiente a los datos originales transformados
+
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.8\linewidth]{originales.jpg}
@@ -604,7 +605,7 @@ npden <- density(x, bw = h)
 ```
 
 
-# Conslusiones y recomendaciones 
+# Conclusiones y recomendaciones 
 \begin{itemize}
 \item En los resultados se observó que los intervalos de confianza de los parámetros obtenidos mediante Montecarlo  son más cortos que los generados por Bootstrap, sin embargo presentan un sesgo mayor sobretodo en la varianza, esto implica que si bien las estimaciones de Montecarlo son más estrechas, pueden estar sujetas a una mayor variabilidad y posiblemente a un mayor grado de error.
 \item  Los intervalos de confianza con Montecarlo podrían brindar una sensación de mayor certeza en las estimaciones de solvencia, lo que podría generar confianza entre los socios y la Cooperativa "X". Sin embargo, es crucial tener en cuenta el sesgo y la variabilidad asociados con estas estimaciones. 
@@ -945,6 +946,28 @@ npden <- density(x, bw = h)
 #     xlim = c(-3,0.5))
 #lines(dens, lwd = 2)
 
+
+```
+**TEST Y GRAFICAS EXTRA PARA LOS VALORES ORIGINALES TRANSFORMADOS**
+```{r message=FALSE, warning=FALSE}
+
+#Test extra -mixtura de normales  Valores originales con logaritmo 
+N<-mvn(data, mvnTest = "mardia",multivariatePlot = "persp",tol =0.005)
+M<-mvn(data, mvnTest = "mardia",multivariatePlot = "qq",tol =0.005 )
+O<-mvn(data, mvnTest = "mardia",multivariatePlot = "contour",tol =0.005 )
+
+
+```
+
+
+
+**TEST Y GRAFICAS EXTRA PARA LOS VALORES SIMULADOS**
+```{r message=FALSE, warning=FALSE}
+#test Extra-mixtura de normales Valores simulados
+data<-dat
+R<-mvn(data, mvnTest = "mardia", showOutliers = TRUE,multivariatePlot = "persp",tol =0.005,transform = "log" )
+S<-mvn(data, mvnTest = "mardia", showOutliers = TRUE,multivariatePlot = "qq",tol =0.005 )
+Q<-mvn(data, mvnTest = "mardia", showOutliers = TRUE,multivariatePlot = "contour",tol =0.005 )
 
 ```
 # Referencias
