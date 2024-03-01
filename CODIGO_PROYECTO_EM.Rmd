@@ -397,7 +397,7 @@ SesgoSd
 
 Para la prueba de hipótesis el jefe según su experiencia segura que el indice de solvencia en promedio es igual $72\%$ . Por lo cual nuestra prueba de hipótesis viene dada por 
 
-
+\vspace{2cm}
 
 \[ H_0: \theta = 0.72 \]
 \[ H_a: \theta \neq 0.72 \]
@@ -605,7 +605,7 @@ npden <- density(x, bw = h)
 
 # Anexos
 
-```{r eval=TRUE, include=FALSE}
+```{r eval=FALSE}
 
 #TEST AD MODIFICADO 
 test_mixturasnormales<-function(data,mus,sigmapob,lambdapob){
@@ -653,7 +653,290 @@ return(p.value)
 ```
 
 
+```{r eval=FALSE}
 
+#GRAFICAS DE CAJAS Y DENSIDADES
+G1<-ggplot(data.frame(x = BASE1$TOTAL_PATRIMONIO_NETO), aes(x)) +
+  geom_histogram(aes(y = ..density..), bins = 20, color = "white", 
+                 fill = "lightblue", alpha = 0.7) +geom_density(color = "darkred", size = 1) +
+  labs(title = "Total Patrimonio Neto")
+
+G2<-ggplot(data.frame(x = BASE1$TOTAL_ACTIVO), aes(x)) +
+  geom_histogram(aes(y = ..density..), bins = 20, color = "white", 
+                 fill = "lightblue", alpha = 0.7) +geom_density(color = "darkred", size = 1) + 
+  labs(title = "Total activo")
+
+G3<-ggplot(data.frame(x = BASE1$Alog), aes(x)) +
+  geom_histogram(aes(y = ..density..), bins = 20, color = "white", 
+                 fill = "lightblue", alpha = 0.7) +geom_density(color = "darkred", size = 1) +
+  labs(title = "Log(Patrimonio Neto)")
+
+G4<-ggplot(data.frame(x = BASE1$Blog), aes(x)) +
+  geom_histogram(aes(y = ..density..), bins = 20, color = "white", 
+                 fill = "lightblue", alpha = 0.7) +
+  geom_density(color = "darkred", size = 1) + labs(title = "Log(Total activo)")
+
+grid.arrange(G1,G2,G3,G4)
+G5<-ggplot(data.frame(x = BASE1$TOTAL_PATRIMONIO_NETO), aes(x)) +
+  geom_boxplot()  + labs(title = "Total Patrimonio Neto")
+G6<-ggplot(data.frame(x = BASE1$TOTAL_ACTIVO), aes(x)) +
+  geom_boxplot()  + labs(title = "Total Activo")
+G7<-ggplot(data.frame(x = BASE1$Alog), aes(x)) +
+  geom_boxplot()  + labs(title = "Log(Patrimonio neto)")
+G8<-ggplot(data.frame(x = BASE1$Blog), aes(x)) +
+  geom_boxplot()  + labs(title = "Log(Total activo)")
+grid.arrange(G5,G6,G7,G8)
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+
+#TEST AD Y APLICACION DEL ALGORITMO EM
+a<-(BASE1$Alog)
+b<-(BASE1$Blog)
+A<-matrix(c(a,b),nrow=660 ,ncol=2)#Con logaritmo funciono
+set.seed(123)
+data <- A
+rownames(data) <- paste0("Obs", 1:nrow(data))
+colnames(data) <- c("Var1", "Var2")
+#APLICAMOS EL ALGORTIMO EM
+em<-mvnormalmixEM(A)
+#OBTENCION DE LAS ESTIMACIONES DE LOS PARAMETROS
+mu<-rbind(em$mu[[1]],em$mu[[2]])
+sigma<-rbind(em$sigma[[1]],em$sigma[[2]])
+#TEST AD , PARA DETERMINAR MIXTURAS NORMALES
+p<-test_mixturasnormales(A,mu,sigma,as.vector(em$lambda))
+#PRIMERA SIMULACION DE DATOS QUE VIENEN DE UNA MIXTURA DE NORMALES
+dat<-rmvnorm.mixt(5000,mus = mu,Sigmas = sigma,props = as.vector(em$lambda))
+
+```
+
+```{r eval=FALSE}
+#RESULTADOS MONTECARLO
+#MONTECARLO
+media<-vector(length = 5000)
+var<-vector(length = 5000)
+sd<-vector(length = 5000)
+for(i in 1:5000){
+dat<-rmvnorm.mixt(5000,mus = mu,Sigmas = sigma,props = as.vector(em$lambda))
+indicador_sim<-dat[,1]-dat[,2]
+media[i]<-mean(indicador_sim)
+var[i]<-var(indicador_sim)
+sd[i]<-sd(indicador_sim)
+}
+#Estimaciones con variables Transformadas
+liminfMonte<-quantile(media,0.025)
+limisupMonte<-quantile(media,1-0.025)
+MediaMonte<-mean(media)
+Var_Montemean<-mean(var)
+SdMonte<-mean(sd)
+liminfMonte
+limisupMonte
+MediaMonte
+Var_Montemean
+SdMonte
+#Estimaciones con variables retransformadas
+LIINF<-exp(liminfMonte)
+LIMSUP<-exp(limisupMonte)
+MEDIA<-exp(MediaMonte)
+VAR<-exp(Var_Montemean)
+SD<-exp(SdMonte)
+LIINF
+LIMSUP
+MEDIA
+VAR
+SD
+#CALCULO DEL SESGO DE VARIABLES RETRANSFORMADAS
+SesgoMedia<-MEDIA-mean(BASE1$IndSolvencia)
+SesgoVar<-VAR-var(BASE1$IndSolvencia)
+SesgoSd<-SdMonte-sd(BASE1$IndSolvencia)
+
+SesgoMedia
+
+SesgoVar
+
+SesgoSd
+```
+
+
+```{r eval=FALSE}
+#CONTRASTE DE HIPOTESIS datos transformados(log)
+#HO:mu=-0.3285041
+#Ha:mu=\-0.3285041
+numsimu<-1000
+pvalue<-numeric(numsimu)
+for (i in 1:numsimu){
+dat<-rmvnorm.mixt(5000,mus = mu,Sigmas = sigma,props = as.vector(em$lambda))
+indicador_sim<-dat[,1]-dat[,2]
+ind<-(indicador_sim)
+estadistico<-(mean(ind)+0.3285041)/(sd(ind)/sqrt(5000))
+p<- 1-pt(abs(estadistico),5000-1)+pt(-abs(estadistico),5000-1)
+pvalue[i]<-p
+}
+
+cat("\nProporción de rechazos al 1%=",mean(pvalue<0.01),"\n")
+cat("\nProporción de rechazos al 5%=",mean(pvalue<0.05),"\n")
+cat("\nProporción de rechazos al 10%=",mean(pvalue<0.1),"\n")
+```
+
+
+```{r eval=FALSE}
+#BOOTSRAP NO PARAMETRICO
+
+
+
+library(readxl)
+library(tidyverse)
+library(dplyr)
+library(boot)
+
+
+#Cargar la base
+load('BASE_SOLICITUD_DE_CREDITO.RData')
+
+#Crear indicador
+Datos1<-BASE1 %>% mutate(Ind_efectivo=TOTAL_PATRIMONIO_NETO/TOTAL_ACTIVO) |>
+  select(TOTAL_ACTIVO,
+         TOTAL_PATRIMONIO_NETO,Ind_efectivo)
+
+#Función bootstrap no paramétrica
+
+bootstrap <- function(N_muestras,datos_exp,alpha,valor){
+  n <- length(datos_exp)
+  media <- numeric(n)
+  varianza <- numeric(n)
+  desviacion <- numeric(n)
+  valor_p <- numeric(N_muestras)
+  for (i in 1:N_muestras){
+    #remuestras
+    muestra <- sample(datos_exp,replace = TRUE)
+    #estadísticos
+    media[i] <- mean(muestra)
+    #media
+    varianza[i] <- var(muestra)
+    # desviación
+    desviacion[i] <- sd(muestra)
+    #media
+    x_barra_boot <- mean(muestra)
+    # desviación
+    cuasi_dt_boot <- sd(muestra)
+    #Contraste de hipotesis Media
+    #Ho: mu=valor
+    t <- (x_barra_boot-valor)/(cuasi_dt_boot/sqrt(n))
+    p.valor <- 1-pt(abs(t),n-1)+pt(-abs(t),n-1)
+    valor_p[i] <- p.valor
+  }
+  #Intervalos al 95% de confianza media
+  ic_inf_media <- quantile(media, prob = 0.025)
+  ic_sup_media <- quantile(media, prob = 0.975)
+  intervalo_confianza_media <- c(ic_inf_media, ic_sup_media)
+  #Intervalos al 95% de confianza varianza
+  ic_inf_varianza <- quantile(varianza, prob = 0.025)
+  ic_sup_varianza <- quantile(varianza, prob = 0.975)
+  intervalo_confianza_varianza <- c(ic_inf_varianza, ic_sup_varianza)
+  #Intervalos al 95% de confianza desviacion
+  ic_inf_desviacion <- quantile(desviacion, prob = 0.025)
+  ic_sup_desviacion <- quantile(desviacion, prob = 0.975)
+  intervalo_confianza_desviacion <- c(ic_inf_desviacion, ic_sup_desviacion)
+  
+  #Sesgo del estadístico
+  sesgo_media <- mean(datos_exp)-sum(media)/N_muestras
+  #Sesgo del estadístico
+  sesgo_varianza <- var(datos_exp)-sum(varianza)/N_muestras
+  #Sesgo del estadístico
+  sesgo_desviacion <- sd(datos_exp)-sum(desviacion)/N_muestras
+  
+  return(list(Muestras_media = media,Muestras_varianza = varianza,
+              Muestras_desviacion = desviacion, 
+              media_estimada =sum(media)/N_muestras, 
+              varianza_estimada =sum(varianza)/N_muestras,
+              desv_estimada =sum(desviacion)/N_muestras,
+              IC_media = intervalo_confianza_media,
+              IC_varianza = intervalo_confianza_varianza,
+              IC_desv = intervalo_confianza_desviacion,
+              Sesgo_mean=sesgo_media,Sesgo_var=sesgo_varianza,
+              Sesgo_desv=sesgo_desviacion,prop_rechazo_media=mean(valor_p<0.05)))
+}
+
+############ CON LOS DATOS ORIGINALES ################
+
+############ PARA LA MEDIA ##############
+remuestreo <- bootstrap(50000,Datos1$Ind_efectivo,0.05,0.75)
+#Media estimada
+remuestreo$media_estimada
+#Intervalo
+remuestreo$IC_media
+#sesgo
+remuestreo$Sesgo_mean
+#contraste
+remuestreo$prop_rechazo_media
+
+############ PARA LA VARIANZA ##############
+#varianza estimada
+remuestreo$varianza_estimada
+#Intervalo
+remuestreo$IC_varianza
+#sesgo
+remuestreo$Sesgo_var
+
+########### PARA LA DESVIACIÓN ##############
+#Desviacion estimada
+remuestreo$desv_estimada
+#Intervalo
+remuestreo$IC_desv
+#sesgo
+remuestreo$Sesgo_desv
+
+
+########## CON LOS DATOS TRANSFORMADOS ##############
+Datos1$Ind_efectivo <- log(Datos1$Ind_efectivo)
+remuestreo <- bootstrap(50000,Datos1$Ind_efectivo,0.05,0.75)
+
+############ PARA LA MEDIA ##############
+#Media estimada
+remuestreo$media_estimada
+#Intervalo
+remuestreo$IC_media
+#sesgo
+remuestreo$Sesgo_mean
+#contraste
+remuestreo$prop_rechazo_media
+
+############ PARA LA VARIANZA ##############
+#Varianza estimada
+remuestreo$varianza_estimada
+#Intervalo
+remuestreo$IC_varianza
+#sesgo
+remuestreo$Sesgo_var
+
+
+########### PARA LA DESVIACIÓN ##############
+#Desviacion estimada
+remuestreo$desv_estimada
+#Intervalo
+remuestreo$IC_desv
+#sesgo
+remuestreo$Sesgo_desv
+
+#Densidad de simulados
+
+x <- Datos1$Ind_efectivo
+h <- bw.SJ(x)
+dens <- density(x)
+npden <- density(x, bw = h)
+# npden <- density(x, bw = "SJ")
+# h <- npden$bw
+
+# plot(npden)
+#hist(x, freq = FALSE, breaks = "FD", main = "Kernel density estimation",
+#     xlab = paste("Bandwidth =", formatC(h)), border = "darkgray", 
+#     xlim = c(-3,0.5))
+#lines(dens, lwd = 2)
+
+
+```
 # Referencias
 
 
